@@ -1,0 +1,55 @@
+{
+    "name": "bonaccorsop/testzer0",
+    "description": "A project based on LEMP stack",
+    "version": "0.1.1",
+    "type": "project",
+    "keywords": ["testzer0", "no-index", "never-mind"],
+    "time": "2017-06-13",
+    "authors": [
+        {
+            "name": "Pietro Bonaccorso",
+            "email": "bonaccorso.p@gmail.com",
+            "role": "developer"
+        }
+    ],
+    "support": {
+        "email": "bonaccorso.p@gmail.com",
+        "source": "https://github.com/bonaccorsop/testzer0"
+    },
+
+    "require": {
+        "php" : "^7.0",
+        "ext-mbstring": "*",
+
+        "oscarotero/env": "^1.0.2",
+        "monolog/monolog": "^1.22.1",
+        "nesbot/carbon": "^1.22.1",
+        "league/fractal": "^0.16.0",
+        "guzzlehttp/guzzle": "^6.2.3",
+        "symfony/console": "^3.3.2",
+        "silex/silex": "^2.1.0",
+        "pda/pheanstalk": "^3.1.0"
+    },
+
+    "require-dev": {
+        "symfony/var-dumper": "^3.3.2"
+    },
+
+    "autoload": {
+
+        "psr-4": {
+            "Test\\": "src/Test",
+        },
+
+        "classmap": [
+            "migrations"
+        ]
+
+    },
+
+    "minimum-stability": "stable",
+
+    "config": {
+        "bin-dir": "bin"
+    }
+}

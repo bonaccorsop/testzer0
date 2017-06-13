@@ -1,0 +1,14 @@
+#Dotenv
+.env
+.env.*
+!.env.example
+
+### Composer ###
+composer.phar
+vendor/
+
+### OSX ###
+.DS_Store
+.AppleDouble
+.LSOverride
+
