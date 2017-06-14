@@ -31,28 +31,22 @@ Env::init();
 date_default_timezone_set(env('APP_TIMEZONE'));
 
 // --------------------------------------------------------------------
-// Setup global Dumper, just in development scenario
+// Setup global Dumper
 // --------------------------------------------------------------------
 
-if(env('APP_ENV') === 'development') {
+Symfony\Component\VarDumper\VarDumper::setHandler(function ($var) {
+    $cloner = new Symfony\Component\VarDumper\Cloner\VarCloner();
+    $dumper = 'cli' === PHP_SAPI ? new Symfony\Component\VarDumper\Dumper\CliDumper() : new Symfony\Component\VarDumper\Dumper\HtmlDumper();
+    $dumper->dump($cloner->cloneVar($var));
+});
 
-    Symfony\Component\VarDumper\VarDumper::setHandler(function ($var) {
-        $cloner = new Symfony\Component\VarDumper\Cloner\VarCloner();
-        $dumper = 'cli' === PHP_SAPI ? new Symfony\Component\VarDumper\Dumper\CliDumper() : new Symfony\Component\VarDumper\Dumper\HtmlDumper();
-        $dumper->dump($cloner->cloneVar($var));
-    });
-
-}
 
 // --------------------------------------------------------------------
 // Setup Logger
 // --------------------------------------------------------------------
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-
-$logger = new Logger(env('APP_NAME'));
-$logger->pushHandler(new StreamHandler(env('FPM_CUSTOM_LOGFILE', 'php://stdout')));
+$logger = new Monolog\Logger(env('APP_NAME'));
+$logger->pushHandler(new Monolog\Handler\StreamHandler(env('FPM_CUSTOM_LOGFILE', 'php://stdout')));
 
 
 // --------------------------------------------------------------------
@@ -70,13 +64,5 @@ $mysqlClient->addConnection([
     'password'  => env('MYSQL_PASS'),
     'database'  => env('MYSQL_DB')
 ]);
-
-//boot di Eloquent
-$mysqlClient->bootEloquent();
-
-// --------------------------------------------------------------------
-// Load Services
-// --------------------------------------------------------------------
-
 
 

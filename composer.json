@@ -22,18 +22,14 @@
         "ext-mbstring": "*",
 
         "oscarotero/env": "^1.0.2",
+        "symfony/var-dumper": "^3.3.2",
         "illuminate/database": "^5.4.19",
         "monolog/monolog": "^1.22.1",
         "nesbot/carbon": "^1.22.1",
         "league/fractal": "^0.16.0",
-        "guzzlehttp/guzzle": "^6.2.3",
         "symfony/console": "^3.3.2",
         "silex/silex": "^2.1.0",
         "pda/pheanstalk": "^3.1.0"
-    },
-
-    "require-dev": {
-        "symfony/var-dumper": "^3.3.2"
     },
 
     "autoload": {

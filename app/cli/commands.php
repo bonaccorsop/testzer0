@@ -4,5 +4,5 @@
 // HelloWorld Command
 // --------------------------------------------------------------------
 
-$cliProvider->add(new Test0\Cli\Command\HelloWorldCommand);
+$app->add(new Test0\Cli\Command\HelloWorldCommand);
 

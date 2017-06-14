@@ -13,7 +13,7 @@ class HelloWorldCommand extends Command
     {
         $this
             ->setName('app:hello')
-            ->setDescription('L\'ets greet!')
+            ->setDescription('Let\'s greet!')
         ;
     }
 

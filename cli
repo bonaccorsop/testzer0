@@ -7,10 +7,17 @@
 require_once __DIR__ . '/bootstrap.php';
 
 // --------------------------------------------------------------------
+// Load Service Provider
+// --------------------------------------------------------------------
+
+$serviceProvider = require APP_CWD . '/app/service/serviceprovider.php';
+
+// --------------------------------------------------------------------
 // Init Synfony Console with injection of Services
 // --------------------------------------------------------------------
 
-$cliProvider = new \Symfony\Component\Console\Application();
+$app = new Test0\Cli\Application;
+$app->setServiceProvider($serviceProvider);
 
 // --------------------------------------------------------------------
 // Load Commands
@@ -22,4 +29,4 @@ require_once APP_CWD . '/app/cli/commands.php';
 // Run the application CLI interface...
 // --------------------------------------------------------------------
 
-$cliProvider->run();
+$app->run();
