@@ -36,14 +36,9 @@ date_default_timezone_set(env('APP_TIMEZONE'));
 
 if(env('APP_ENV') === 'development') {
 
-    use Symfony\Component\VarDumper\VarDumper;
-    use Symfony\Component\VarDumper\Cloner\VarCloner;
-    use Symfony\Component\VarDumper\Dumper\CliDumper;
-    use Symfony\Component\VarDumper\Dumper\HtmlDumper;
-
-    VarDumper::setHandler(function ($var) {
-        $cloner = new VarCloner();
-        $dumper = 'cli' === PHP_SAPI ? new CliDumper() : new HtmlDumper();
+    Symfony\Component\VarDumper\VarDumper::setHandler(function ($var) {
+        $cloner = new Symfony\Component\VarDumper\Cloner\VarCloner();
+        $dumper = 'cli' === PHP_SAPI ? new Symfony\Component\VarDumper\Dumper\CliDumper() : new Symfony\Component\VarDumper\Dumper\HtmlDumper();
         $dumper->dump($cloner->cloneVar($var));
     });
 
@@ -69,7 +64,7 @@ $mysqlClient = new Illuminate\Database\Capsule\Manager;
 $mysqlClient->addConnection([
     'driver'    => DB_DRIVER,
     'charset'   => DB_CHARSET,
-    'collation' => DB_COLLATION
+    'collation' => DB_COLLATION,
     'host'      => env('MYSQL_CONNECTION'),
     'username'  => env('MYSQL_USER'),
     'password'  => env('MYSQL_PASS'),

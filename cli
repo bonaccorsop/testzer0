@@ -4,23 +4,22 @@
 // Application dependencies bootstrap
 // --------------------------------------------------------------------
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/bootstrap.php';
 
 // --------------------------------------------------------------------
-// Init HTTP instance with injection of dependecies
+// Init Synfony Console with injection of Services
 // --------------------------------------------------------------------
 
-$httpProvider = new \Silex\Application();
-$httpProvider['debug'] = env('APP_DEBUG', false);
+$cliProvider = new \Symfony\Component\Console\Application();
 
 // --------------------------------------------------------------------
-// Load Routes
+// Load Commands
 // --------------------------------------------------------------------
 
-require_once APP_CWD . '/app/http/routes.php';
+require_once APP_CWD . '/app/cli/commands.php';
 
 // --------------------------------------------------------------------
-// Run the application HTTP interface...
+// Run the application CLI interface...
 // --------------------------------------------------------------------
 
-$httpProvider->run();
+$cliProvider->run();
