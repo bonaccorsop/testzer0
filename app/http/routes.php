@@ -5,7 +5,8 @@
 // --------------------------------------------------------------------
 
 $app['posts.controller'] = function() use ($app) {
-    return new Test0\Http\Controller\PostController($app->getService('PostService'));
+    $postService = $app->getService('PostService');
+    return new Test0\Http\Controller\PostController($app, $postService);
 };
 
 // --------------------------------------------------------------------

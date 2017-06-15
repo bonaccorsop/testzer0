@@ -65,4 +65,6 @@ $mysqlClient->addConnection([
     'database'  => env('MYSQL_DB')
 ]);
 
+$mysqlClient->setAsGlobal();
+
 
