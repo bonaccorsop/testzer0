@@ -44,11 +44,21 @@ class UserController extends Controller
         ], 201);
     }
 
+    /**
+     * @return Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function logout()
+    {
+        $this->authService->voidToken(self::getUserID());
+        return $this->successResponse([], 204);
+    }
+
 
     public function test()
     {
         return $this->successResponse([
             'message' => 'Holà!',
+            'userId' => self::getUserID(),
         ], 200);
     }
 

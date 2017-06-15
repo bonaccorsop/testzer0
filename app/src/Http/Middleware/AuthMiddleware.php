@@ -35,6 +35,7 @@ class AuthMiddleware extends Controller
 
         try {
             $user = $this->authService->authorize($token);
+            self::setUserID($user->id);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode());
         }

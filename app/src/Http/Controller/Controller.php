@@ -20,6 +20,7 @@ abstract class Controller
     const MAX_PAGELEN = 100;
 
     protected $app;
+    protected static $userId;
 
     public function __construct(Application $app)
     {
@@ -32,6 +33,22 @@ abstract class Controller
     protected function getApplication() : Application
     {
         return $this->app;
+    }
+
+    /**
+     * @return null
+     */
+    protected static function setUserID(int $id)
+    {
+        self::$userId = $id;
+    }
+
+    /**
+     * @return int
+     */
+    protected static function getUserID()
+    {
+        return self::$userId;
     }
 
     /**

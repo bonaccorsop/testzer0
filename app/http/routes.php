@@ -30,8 +30,7 @@ $app['auth'] = function() use ($app, $authService) {
 // --------------------------------------------------------------------
 
 $app->post('/login',            'user.controller:login');
-$app->delete('/logout',         'user.controller:logout');
-
+$app->delete('/logout',         'user.controller:logout')->before('auth:run');
 $app->get('/auth',              'user.controller:test')->before('auth:run');
 
 
