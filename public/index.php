@@ -33,7 +33,7 @@ require_once APP_CWD . '/app/http/routes.php';
 // --------------------------------------------------------------------
 
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, DELETE');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE');
 header("Access-Control-Allow-Headers: X-Requested-With");
 
 // --------------------------------------------------------------------

@@ -1,21 +1,48 @@
 <?php
 
 // --------------------------------------------------------------------
-// Define Controllers
+// Define Controllers and Middlewares
 // --------------------------------------------------------------------
 
-$app['posts.controller'] = function() use ($app) {
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+$authService = $app->getService('AuthService');
+
+$app['post.controller'] = function() use ($app) {
     $postService = $app->getService('PostService');
     return new Test0\Http\Controller\PostController($app, $postService);
 };
 
+$app['user.controller'] = function() use ($app, $authService) {
+    return new Test0\Http\Controller\UserController($app, $authService);
+};
+
+$app['auth'] = function() use ($app, $authService) {
+    return new Test0\Http\Middleware\AuthMiddleware($app, $authService);
+};
+
+
+
 // --------------------------------------------------------------------
-// Routes Definition
+// Auth Routes
 // --------------------------------------------------------------------
 
-$app->get('/v1/posts', 'posts.controller:index');
-$app->get('/v1/posts/{postId}', 'posts.controller:find');
+$app->post('/login',            'user.controller:login');
+$app->delete('/logout',         'user.controller:logout');
 
-$app->post('/v1/posts', 'posts.controller:create');
-$app->put('/v1/posts', 'posts.controller:update');
-$app->delete('/v1/posts', 'posts.controller:delete');
+$app->get('/auth',              'user.controller:test')->before('auth:run');
+
+
+// --------------------------------------------------------------------
+// Business Logic Routes
+// --------------------------------------------------------------------
+
+$app->get('/posts',             'post.controller:index');
+$app->get('/posts/{postId}',    'post.controller:find');
+
+$app->post('/posts',            'post.controller:create');
+$app->put('/posts',             'post.controller:update');
+$app->delete('/posts',          'post.controller:delete');
+

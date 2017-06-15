@@ -56,4 +56,52 @@ abstract class Repository
         return ! empty($filterCallback) ? $filterCallback($query) : $query;
     }
 
+    /**
+     * @param array $filter
+     * @return stdClass
+     */
+    protected function getFirst(array $filter)
+    {
+        return $this->getFiltered(function(Builder $query) use ($filter) {
+            return $query->where($filter);
+        })->first();
+    }
+
+    /**
+     * @param callable $filterCallback (optional)
+     * @return stdClass
+     */
+    public function pick(int $id)
+    {
+        return $this->getTable()->find($id);
+    }
+
+    /**
+     * @param callable $filterCallback (optional)
+     * @return int
+     */
+    public function getCount(callable $filterCallback = null) : int
+    {
+        return $this->getFiltered($filterCallback)->count();
+    }
+
+    /**
+     * @param array $params (optional)
+     * @return array
+     */
+    public function getAll(callable $filterCallback = null, int $page, int $pagelen) : array
+    {
+        return $this->paginate($this->getFiltered($filterCallback), $pagelen, $page)->get()->toArray();
+    }
+
+    /**
+     * @param int $id,
+     * @param array $data,
+     * @return stdClass
+     */
+    public function update(int $id, array $data)
+    {
+        return $this->getTable()->where(['id' => $id])->update($data);
+    }
+
 }

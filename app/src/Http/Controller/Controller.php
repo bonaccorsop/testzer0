@@ -2,6 +2,7 @@
 
 namespace Test0\Http\Controller;
 
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Test0\Http\Application;
 use Test0\Http\Utility\InputTrait;
@@ -44,7 +45,7 @@ abstract class Controller
     }
 
     /**
-     * @param array $message
+     * @param string $message
      * @param int $statusCode
      * @return JsonResponse
      */
@@ -54,6 +55,22 @@ abstract class Controller
             'status' => 'error',
             'code' => $statusCode,
             'message' => $message
+        ];
+
+        return $this->jsonResponse($body, $statusCode);
+    }
+
+    /**
+     * @param array $data
+     * @param int $statusCode
+     * @return JsonResponse
+     */
+    protected function successResponse(array $data, int $statusCode = 200) : JsonResponse
+    {
+        $body = [
+            'status' => 'success',
+            'code' => $statusCode,
+            'data' => $data
         ];
 
         return $this->jsonResponse($body, $statusCode);
@@ -101,6 +118,19 @@ abstract class Controller
         return [
             self::DATA_KEY => $data
         ];
+    }
+
+    /**
+     * @param callable $callback
+     * @return mixed
+     */
+    protected function trapHttpException(callable $callback)
+    {
+        try {
+            return $callback();
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
     }
 
 

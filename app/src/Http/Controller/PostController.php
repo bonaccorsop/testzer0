@@ -52,7 +52,11 @@ class PostController extends Controller
      */
     public function create()
     {
-
+        try {
+            return $this->jsonResponse($this->getItemBody($this->postService->find($postId)));
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
     }
 
     /**
