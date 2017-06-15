@@ -6,6 +6,8 @@ use Illuminate\Database\Capsule\Manager as MysqlClient;
 
 abstract class Repository
 {
+    const DEFAULT_PAGELEN = 10;
+
     private $mysqlClient = null;
 
     /**
