@@ -2,7 +2,10 @@
 
 namespace Test0\Http\Controller;
 
+use Exception;
 use Test0\Service\PostService;
+use Test0\Application\Exception\PostNotFoundException;
+
 
 class PostController extends Controller
 {
@@ -24,7 +27,48 @@ class PostController extends Controller
      */
     public function index()
     {
-        return $this->jsonResponse($this->postService->list());
+        return $this->jsonResponse(
+            $this->getCollectionBody(
+                $this->postService->list($this->getPage(), $this->getPageLen()),
+                $this->postService->count()
+            )
+        );
+    }
+
+    /**
+     * @return Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function find($postId)
+    {
+        try {
+            return $this->jsonResponse($this->getItemBody($this->postService->find($postId)));
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
+    }
+
+    /**
+     * @return Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function create()
+    {
+
+    }
+
+    /**
+     * @return Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function update()
+    {
+
+    }
+
+    /**
+     * @return Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function delete()
+    {
+
     }
 
 }

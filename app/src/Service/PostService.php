@@ -3,8 +3,10 @@
 namespace Test0\Service;
 
 use Test0\Repository\PostRepository;
+use Test0\Application\Exception\PostNotFoundException;
+use stdClass;
 
-final class PostService extends Service
+class PostService extends Service
 {
     private $postRepository;
 
@@ -20,12 +22,49 @@ final class PostService extends Service
     }
 
     /**
-     * @param array $params (optional)
+     * @param int $id
+     * @return stdClass
+     * @throws PostNotFoundException
+     */
+    public function find($id) : stdClass
+    {
+        $post = $this->postRepository->pick($id);
+
+        if(empty($post)) {
+            throw new PostNotFoundException("No post found with id {$id}", 404);
+        }
+
+        return $post;
+    }
+
+    /**
+     * @param int $page
+     * @param int $pagelen
      * @return array
      */
-    public function list(array $params = null) : array
+    public function list(int $page, int $pagelen) : array
     {
-        return $this->postRepository->getAll($params);
+        return $this->postRepository->getAll(null, $page, $pagelen);
+    }
+
+    /**
+     * @param int $page
+     * @param int $pagelen
+     * @return array
+     */
+    public function create(int $page, int $pagelen) : array
+    {
+        return $this->postRepository->store();
+    }
+
+    /**
+     * @param int $page
+     * @param int $pagelen
+     * @return array
+     */
+    public function count() : int
+    {
+        return $this->postRepository->getCount();
     }
 
 }
