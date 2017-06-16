@@ -23,14 +23,17 @@ class PostController extends Controller
     }
 
     /**
+     * @route me/posts
      * @return Symfony\Component\HttpFoundation\JsonResponse
      */
     public function index()
     {
+        $uid = self::getUserID();
+
         return $this->jsonResponse(
             $this->getCollectionBody(
-                $this->postService->list($this->getPage(), $this->getPageLen()),
-                $this->postService->count()
+                $this->postService->listForUser($uid, $this->getPage(), $this->getPageLen()),
+                $this->postService->countForUser($uid)
             )
         );
     }
@@ -41,7 +44,7 @@ class PostController extends Controller
     public function find($postId)
     {
         try {
-            return $this->jsonResponse($this->getItemBody($this->postService->find($postId)));
+            return $this->jsonResponse($this->getItemBody($this->postService->findforUser(self::getUserID(), $postId)));
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode());
         }
@@ -52,11 +55,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        try {
-            return $this->jsonResponse($this->getItemBody($this->postService->find($postId)));
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), $e->getCode());
-        }
+
     }
 
     /**

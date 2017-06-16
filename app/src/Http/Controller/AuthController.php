@@ -1,6 +1,6 @@
 <?php
 
-namespace Test0\Http\Middleware;
+namespace Test0\Http\Controller;
 
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
@@ -8,9 +8,12 @@ use Test0\Http\Controller\Controller;
 use Test0\Service\AuthService;
 
 
-class AuthMiddleware extends Controller
+class AuthController extends Controller
 {
     protected $authService;
+
+    const USERNAME_KEY = 'username';
+    const PASSWORD_KEY = 'password';
 
     /**
      * @param Test0\Http\Application $app
@@ -25,11 +28,30 @@ class AuthMiddleware extends Controller
     }
 
     /**
+     * @return Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function login(Request $request)
+    {
+        $credentials = $this->decodeRequestPayload($request->getContent());
+
+        try {
+            $token = $this->authService->authenticate($credentials[self::USERNAME_KEY], base64_decode($credentials[self::PASSWORD_KEY]));
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
+
+        return $this->successResponse([
+            'message' => 'You\'re logged in!',
+            'token' => $token
+        ], 201);
+    }
+
+    /**
      * @param Test0\Http\Application $app
      * @param AuthService $authService
      * @return null
      */
-    public function run(Request $request)
+    public function middleware(Request $request)
     {
         $token = $request->headers->get('token');
 

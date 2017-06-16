@@ -60,7 +60,7 @@ abstract class Repository
      * @param array $filter
      * @return stdClass
      */
-    protected function getFirst(array $filter)
+    public function getFirst(array $filter)
     {
         return $this->getFiltered(function(Builder $query) use ($filter) {
             return $query->where($filter);

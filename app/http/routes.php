@@ -4,44 +4,32 @@
 // Define Controllers and Middlewares
 // --------------------------------------------------------------------
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Test0\Http\Application;
 
 $authService = $app->getService('AuthService');
 
-$app['post.controller'] = function() use ($app) {
-    $postService = $app->getService('PostService');
-    return new Test0\Http\Controller\PostController($app, $postService);
+$app['posts'] = function(Application $app) {
+    return new Test0\Http\Controller\PostController($app, $app->getService('PostService'));
 };
 
-$app['user.controller'] = function() use ($app, $authService) {
-    return new Test0\Http\Controller\UserController($app, $authService);
-};
-
-$app['auth'] = function() use ($app, $authService) {
-    return new Test0\Http\Middleware\AuthMiddleware($app, $authService);
+$app['auth'] = function(Application $app) use ($authService) {
+    return new Test0\Http\Controller\AuthController($app, $app->getService('AuthService'));
 };
 
 // --------------------------------------------------------------------
 // Auth Routes
 // --------------------------------------------------------------------
 
-$app->post('/login',            'user.controller:login');
-$app->delete('/logout',         'user.controller:logout')->before('auth:run');
-$app->get('/auth',              'user.controller:test')->before('auth:run');
-
+$app->post('/login',            'auth:login');
 
 // --------------------------------------------------------------------
 // Business Logic Routes
 // --------------------------------------------------------------------
 
+$app->get('me/posts',             'posts:index')->before('auth:middleware');
+$app->get('me/posts/{postId}',    'posts:find')->before('auth:middleware');
 
-
-// $app->get('/posts',             'post.controller:index');
-// $app->get('/posts/{postId}',    'post.controller:find');
-
-// $app->post('/posts',            'post.controller:create');
-// $app->put('/posts',             'post.controller:update');
-// $app->delete('/posts',          'post.controller:delete');
+$app->post('me/posts',            'posts:create');
+$app->put('me/posts/{postId}',    'posts:update');
+$app->delete('me/posts/{postId}', 'posts:delete');
 

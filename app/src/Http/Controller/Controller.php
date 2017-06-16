@@ -28,14 +28,6 @@ abstract class Controller
     }
 
     /**
-     * @return Application
-     */
-    protected function getApplication() : Application
-    {
-        return $this->app;
-    }
-
-    /**
      * @return null
      */
     protected static function setUserID(int $id)
@@ -49,6 +41,23 @@ abstract class Controller
     protected static function getUserID()
     {
         return self::$userId;
+    }
+
+    /**
+     * @return Application
+     */
+    protected function getApplication() : Application
+    {
+        return $this->app;
+    }
+
+    /**
+     * @return string $payload
+     * @return array
+     */
+    protected function decodeRequestPayload(string $payload) : array
+    {
+        return json_decode($payload, true);
     }
 
     /**

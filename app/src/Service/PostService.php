@@ -4,6 +4,7 @@ namespace Test0\Service;
 
 use Test0\Repository\PostRepository;
 use Test0\Application\Exception\PostNotFoundException;
+use Illuminate\Database\Query\Builder;
 use stdClass;
 
 class PostService extends Service
@@ -22,49 +23,45 @@ class PostService extends Service
     }
 
     /**
-     * @param int $id
-     * @return stdClass
-     * @throws PostNotFoundException
+     * @param int $uid
+     * @param int $page
+     * @param int $pagelen
+     * @return array
      */
-    public function find($id) : stdClass
+    public function listForUser(int $uid, int $page, int $pagelen) : array
     {
-        $post = $this->postRepository->pick($id);
+        return $this->postRepository->getAll(function(Builder $query) use ($uid) {
+            return $query->where('user_id', $uid);
+        }, $page, $pagelen);
+    }
+
+    /**
+     * @param int $uid
+     * @return int
+     */
+    public function countForUser(int $uid) : int
+    {
+        return $this->postRepository->getCount(function(Builder $query) use ($uid) {
+            return $query->where('user_id', $uid);
+        });
+    }
+
+    /**
+     * @param int $uid
+     * @return stdClass
+     */
+    public function findForUser(int $uid, int $postId) : stdClass
+    {
+        $post = $this->postRepository->getFirst([
+            'id' => $postId,
+            'user_id' => $uid
+        ]);
 
         if(empty($post)) {
-            throw new PostNotFoundException("No post found with id {$id}", 404);
+            throw new PostNotFoundException("No post found with id {$postId}", 404);
         }
 
         return $post;
-    }
-
-    /**
-     * @param int $page
-     * @param int $pagelen
-     * @return array
-     */
-    public function list(int $page, int $pagelen) : array
-    {
-        return $this->postRepository->getAll(null, $page, $pagelen);
-    }
-
-    /**
-     * @param int $page
-     * @param int $pagelen
-     * @return array
-     */
-    public function create(int $page, int $pagelen) : array
-    {
-        return $this->postRepository->store();
-    }
-
-    /**
-     * @param int $page
-     * @param int $pagelen
-     * @return array
-     */
-    public function count() : int
-    {
-        return $this->postRepository->getCount();
     }
 
 }

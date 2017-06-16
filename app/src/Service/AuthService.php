@@ -3,6 +3,7 @@
 namespace Test0\Service;
 
 use stdClass;
+use Exception;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\Builder as JWTBuilder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -42,7 +43,7 @@ class AuthService extends Service
      * @throws InvalidCredentialsException
      * @return Token
      */
-    public function authenticate(string $username, string $password) : Token
+    public function authenticate(string $username, string $password) : string
     {
         //resolve password
         $password = $this->encryptPassword($password);
@@ -53,7 +54,9 @@ class AuthService extends Service
             throw new InvalidCredentialsException("Invalid Credentials", 401);
         }
 
-        return $this->generateJwt(['uid' => $user->id, 'username' => $user->email]);
+        $jwt = $this->generateJwt(['uid' => $user->id, 'username' => $user->email]);
+
+        return $this->encodeToken((string) $jwt);
     }
 
     /**
@@ -63,15 +66,18 @@ class AuthService extends Service
      */
     public function authorize(string $token) : int
     {
-        $token = (new Parser())->parse($token);
+        $invalidException = new InvalidTokenException('Invalid or Expired Token', 401);
 
-        $uid = $token->getClaim('uid');
-
-        if(! $this->checkJwt($token)) {
-            throw new InvalidTokenException('Invalid or Expired Token', 401);
+        try {
+            $token = (new Parser())->parse($this->decodeToken($token));
+            if(! $this->checkJwt($token)) {
+                throw $invalidException;
+            }
+        } catch (Exception $e) {
+            throw $invalidException;
         }
 
-        return $uid;
+        return $token->getClaim('uid');
     }
 
     /**
@@ -104,8 +110,18 @@ class AuthService extends Service
      * @param string $cleanPassword
      * @return string
      */
-    private function encryptPassword(string $cleanPassword)
+    private function encryptPassword(string $cleanPassword) : string
     {
         return sha1($cleanPassword);
+    }
+
+    private function encodeToken(string $token) : string
+    {
+        return base64_encode($token);
+    }
+
+    private function decodeToken(string $token) : string
+    {
+        return base64_decode($token);
     }
 }
