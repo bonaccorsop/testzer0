@@ -72,8 +72,7 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT NULL,
   `deleted_at` timestamp NULL DEFAULT NULL,
   `email` varchar(128) DEFAULT NULL,
-  `password` varchar(64) DEFAULT NULL,
-  `jwt_token` varchar(256) DEFAULT NULL,
+  `password` varchar(64) DEFAULT NULL
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

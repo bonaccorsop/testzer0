@@ -53,51 +53,35 @@ class AuthService extends Service
             throw new InvalidCredentialsException("Invalid Credentials", 401);
         }
 
-        $token = $this->generateJwt(['uid' => $user->id, 'username' => $user->email]);
-
-        $this->userRepository->storeToken($user->id, (string) $token);
-
-        return $token;
+        return $this->generateJwt(['uid' => $user->id, 'username' => $user->email]);
     }
 
     /**
      * @param string $token
      * @throws InvalidTokenException
-     * @return stdClass
-     */
-    public function authorize(string $token) : stdClass
-    {
-        $user = $this->userRepository->findByToken($token);
-
-        if(empty($user)) {
-            throw new InvalidTokenException('Invalid Token', 401);
-        }
-
-        if(! $this->checkJwt($token)) {
-            $this->voidToken($user->id);
-            throw new ExpiredTokenException('Token Expired', 401);
-        }
-
-        return $user;
-    }
-
-    /**
-     * @param int $userId
      * @return int
      */
-    public function voidToken(int $userId) : int
+    public function authorize(string $token) : int
     {
-        return $this->userRepository->storeToken($userId, null);
+        $token = (new Parser())->parse($token);
+
+        $uid = $token->getClaim('uid');
+
+        if(! $this->checkJwt($token)) {
+            throw new InvalidTokenException('Invalid or Expired Token', 401);
+        }
+
+        return $uid;
     }
 
     /**
-     * @param string $token
+     * @param Token $token
      * @return bool
      */
-    private function checkJwt(string $token) : bool
+    private function checkJwt(Token $token) : bool
     {
         $data = new ValidationData();
-        return (new Parser())->parse($token)->validate($data);
+        return $token->validate($data);
     }
 
     /**

@@ -68,6 +68,8 @@ abstract class Controller
      */
     protected function errorResponse(string $message, int $statusCode = 400) : JsonResponse
     {
+        $statusCode = $this->resolveStatusCode($statusCode);
+
         $body = [
             'status' => 'error',
             'code' => $statusCode,
@@ -138,16 +140,12 @@ abstract class Controller
     }
 
     /**
-     * @param callable $callback
-     * @return mixed
+     * @param int $statusCode
+     * @return int
      */
-    protected function trapHttpException(callable $callback)
+    private function resolveStatusCode(int $statusCode) : int
     {
-        try {
-            return $callback();
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), $e->getCode());
-        }
+        return ($statusCode > 200 && $statusCode < 600) ? $statusCode : 500;
     }
 
 

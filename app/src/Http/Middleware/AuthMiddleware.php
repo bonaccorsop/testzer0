@@ -15,7 +15,7 @@ class AuthMiddleware extends Controller
     /**
      * @param Test0\Http\Application $app
      * @param AuthService $authService
-     * @return PostController
+     * @return AuthMiddleware
      */
     public function __construct($app, AuthService $authService)
     {
@@ -27,18 +27,19 @@ class AuthMiddleware extends Controller
     /**
      * @param Test0\Http\Application $app
      * @param AuthService $authService
-     * @return PostController
+     * @return null
      */
     public function run(Request $request)
     {
         $token = $request->headers->get('token');
 
         try {
-            $user = $this->authService->authorize($token);
-            self::setUserID($user->id);
+            $uid = $this->authService->authorize($token);
         } catch (Exception $e) {
             return $this->errorResponse($e->getMessage(), $e->getCode());
         }
+
+        self::setUserID($uid);
     }
 
 }

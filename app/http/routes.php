@@ -23,8 +23,6 @@ $app['auth'] = function() use ($app, $authService) {
     return new Test0\Http\Middleware\AuthMiddleware($app, $authService);
 };
 
-
-
 // --------------------------------------------------------------------
 // Auth Routes
 // --------------------------------------------------------------------
@@ -38,10 +36,12 @@ $app->get('/auth',              'user.controller:test')->before('auth:run');
 // Business Logic Routes
 // --------------------------------------------------------------------
 
-$app->get('/posts',             'post.controller:index');
-$app->get('/posts/{postId}',    'post.controller:find');
 
-$app->post('/posts',            'post.controller:create');
-$app->put('/posts',             'post.controller:update');
-$app->delete('/posts',          'post.controller:delete');
+
+// $app->get('/posts',             'post.controller:index');
+// $app->get('/posts/{postId}',    'post.controller:find');
+
+// $app->post('/posts',            'post.controller:create');
+// $app->put('/posts',             'post.controller:update');
+// $app->delete('/posts',          'post.controller:delete');
 

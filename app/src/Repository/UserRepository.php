@@ -34,8 +34,8 @@ class UserRepository extends Repository implements RepositoryInterface
     }
 
     /**
-     * @param string $email
-     * @param string $password
+     * @param int $id
+     * @param string $token
      * @throws stdClass
      */
     public function storeToken(int $id, string $token = null)
