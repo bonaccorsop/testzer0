@@ -2,6 +2,9 @@
 
 namespace Test0\Http\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 use Exception;
 use Test0\Service\PostService;
 use Test0\Application\Exception\PostNotFoundException;
@@ -24,9 +27,9 @@ class PostController extends Controller
 
     /**
      * @route me/posts
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
-    public function index()
+    public function index(Request $request) : JsonResponse
     {
         $uid = self::getUserID();
 
@@ -39,9 +42,11 @@ class PostController extends Controller
     }
 
     /**
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @param int $postId
+     * @param Request $requests
+     * @return JsonResponse
      */
-    public function find($postId)
+    public function find(int $postId, Request $requests) : JsonResponse
     {
         try {
             return $this->jsonResponse($this->getItemBody($this->postService->findforUser(self::getUserID(), $postId)));
@@ -51,27 +56,54 @@ class PostController extends Controller
     }
 
     /**
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function create()
+    public function create(Request $request) : JsonResponse
     {
+        $postData = $this->decodeRequestPayload($request->getContent());
 
+        try {
+            $post = $this->postService->createforUser(self::getUserID(), $postData);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
+
+        return $this->jsonResponse($this->getItemBody($post), 201);
     }
 
     /**
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @param int $postId
+     * @param Request $requests
+     * @return JsonResponse
      */
-    public function update()
+    public function update(int $postId, Request $request) : JsonResponse
     {
+        $postData = $this->decodeRequestPayload($request->getContent());
 
+        try {
+            $post = $this->postService->updateforUser(self::getUserID(), $postId, $postData);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
+
+        return $this->jsonResponse([], 204);
     }
 
     /**
-     * @return Symfony\Component\HttpFoundation\JsonResponse
+     * @param int $postId
+     * @param Request $requests
+     * @return JsonResponse
      */
-    public function delete()
+    public function delete(int $postId, Request $request) : JsonResponse
     {
+        try {
+            $post = $this->postService->deleteforUser(self::getUserID(), $postId);
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
 
+        return $this->jsonResponse([], 204);
     }
 
 }

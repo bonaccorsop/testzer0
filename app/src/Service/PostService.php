@@ -2,10 +2,12 @@
 
 namespace Test0\Service;
 
-use Test0\Repository\PostRepository;
-use Test0\Application\Exception\PostNotFoundException;
-use Illuminate\Database\Query\Builder;
 use stdClass;
+use Test0\Application\Exception\PostNotFoundException;
+use Test0\Application\Exception\PostNotAllowedException;
+
+use Test0\Repository\PostRepository;
+use Illuminate\Database\Query\Builder;
 
 class PostService extends Service
 {
@@ -49,16 +51,78 @@ class PostService extends Service
     /**
      * @param int $uid
      * @return stdClass
+     * @throws PostNotFoundException
+     * @throws PostNotAllowedException
      */
     public function findForUser(int $uid, int $postId) : stdClass
     {
-        $post = $this->postRepository->getFirst([
-            'id' => $postId,
-            'user_id' => $uid
-        ]);
+        return $this->pickPostForUser($uid, $postId);
+    }
+
+    /**
+     * @param int $uid
+     * @param array $postData
+     * @return stdClass
+     * @throws InvalidPostDataException
+     */
+    public function createForUser(int $uid, array $postData) : stdClass
+    {
+        //validation @TODO
+
+        return $this->postRepository->create(array_merge($postData, ['user_id' => $uid]));
+    }
+
+    /**
+     * @param int $uid
+     * @param int $postId
+     * @param array $postData
+     * @return stdClass
+     * @throws InvalidPostDataException
+     */
+    public function updateForUser(int $uid, int $postId, array $postData) : stdClass
+    {
+        $post = $this->pickPostForUser($uid, $postId);
+
+        //validation @TODO
+
+
+        $this->postRepository->update($post->id, $postData);
+
+        return $post;
+    }
+
+    /**
+     * @param int $uid
+     * @param int $postId
+     * @param array $postData
+     * @return null
+     * @throws PostNotAllowedException
+     * @throws PostNotFoundException
+     */
+    public function deleteForUser(int $uid, int $postId) : stdClass
+    {
+        $post = $this->pickPostForUser($uid, $postId);
+        $this->postRepository->delete($post->id);
+        return null;
+    }
+
+    /**
+     * @param int $uid
+     * @param int $postId
+     * @return stdClass
+     * @throws PostNotAllowedException
+     * @throws PostNotFoundException
+     */
+    private function pickPostForUser(int $uid, int $postId)
+    {
+        $post = $this->postRepository->getForUser($uid, $postId);
 
         if(empty($post)) {
-            throw new PostNotFoundException("No post found with id {$postId}", 404);
+            if(! empty($this->postRepository->pick($uid))) {
+                throw new PostNotAllowedException("This post in not allowed for you", 401);
+            } else {
+                throw new PostNotFoundException("No post found with id {$postId}", 404);
+            }
         }
 
         return $post;
