@@ -45,7 +45,7 @@ class PostService extends Service
         }
 
         return $this->postRepository->getAll(function(Builder $query) use ($uid) {
-            return $query->where('user_id', $uid);
+            return $query->where('user_id', $uid)->orderBy('id', 'desc');
         }, $page, $pagelen);
     }
 
