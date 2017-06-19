@@ -19,6 +19,8 @@ $app['auth'] = function(Application $app) {
 // --------------------------------------------------------------------
 
 $app->post('/login',            'auth:login');
+$app->post('/signup',            'auth:signup');
+$app->get('/me',               'auth:userInfo')->before('auth:middleware');
 
 // --------------------------------------------------------------------
 // Business Logic Routes

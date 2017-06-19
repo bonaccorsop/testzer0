@@ -15,6 +15,10 @@ use Test0\Application\Exception\InvalidCredentialsException;
 use Test0\Application\Exception\InvalidTokenException;
 use Test0\Application\Exception\ExpiredTokenException;
 
+use Test0\Application\Exception\InvalidEmailException;
+use Test0\Application\Exception\InvalidPasswordException;
+use Test0\Application\Exception\UserAlreadyExistsException;
+
 
 class AuthService extends Service
 {
@@ -60,6 +64,39 @@ class AuthService extends Service
     }
 
     /**
+     * @param string $email
+     * @param string $password
+     * @throws UserAlreadyExistsException
+     * @throws InvalidEmailException
+     * @throws InvalidPasswordException
+     * @return stdClass
+     */
+    public function register(string $email, string $password) : stdClass
+    {
+        //check if is valid email
+        if(! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidEmailException("Invalid email address!", 400);
+        }
+
+        //check if password is strong enougth
+        if(strlen($password) >= 8) {
+            throw new InvalidPasswordException("Password is weak. It should contains at least 8 character", 400);
+        }
+
+        //check if user already exists
+        if(! empty($this->userRepository->getFirst(['email' => $email]))) {
+            throw new UserAlreadyExistsException("user with email {$email} already exists!", 400);
+        }
+
+        $user = $this->userRepository->create([
+            'email' => $email,
+            'password' => $this->encryptPassword($password)
+        ]);
+
+        return $user;
+    }
+
+    /**
      * @param string $token
      * @throws InvalidTokenException
      * @return int
@@ -78,6 +115,17 @@ class AuthService extends Service
         }
 
         return $token->getClaim('uid');
+    }
+
+    /**
+     * @param string $username
+     * @param string $password
+     * @throws InvalidCredentialsException
+     * @return Token
+     */
+    public function getUserInfo(int $uid) : stdClass
+    {
+        return $this->userRepository->pick($uid);
     }
 
     /**

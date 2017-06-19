@@ -43,6 +43,31 @@ class AuthController extends Controller
     }
 
     /**
+     * @return Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function signup(Request $request)
+    {
+        return $this->trapErrorResponse(function() use ($request) {
+            $credentials = $this->decodeRequestPayload($request->getContent());
+            $user = $this->authService->register($credentials[self::USERNAME_KEY], base64_decode($credentials[self::PASSWORD_KEY]));
+            return $this->jsonResponse($this->getItemBody(['id' => $user->id, 'email' => $user->email]));
+        });
+    }
+
+    /**
+     * @return Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function userInfo(Request $request)
+    {
+        return $this->trapErrorResponse(function() {
+            $user = $this->authService->getUserInfo(self::getUserID());
+            return $this->jsonResponse($this->getItemBody(['id' => $user->id, 'email' => $user->email]));
+        });
+
+
+    }
+
+    /**
      * @param Test0\Http\Application $app
      * @param AuthService $authService
      * @return null
