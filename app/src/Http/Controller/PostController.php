@@ -33,12 +33,14 @@ class PostController extends Controller
     {
         $uid = self::getUserID();
 
-        return $this->jsonResponse(
-            $this->getCollectionBody(
-                $this->postService->listForUser($uid, $this->getPage(), $this->getPageLen()),
-                $this->postService->countForUser($uid)
-            )
-        );
+        return $this->trapErrorResponse(function() use ($uid) {
+            return $this->jsonResponse(
+                $this->getCollectionBody(
+                    $this->postService->listForUser($uid, $this->getPage(), $this->getPageLen()),
+                    $this->postService->countForUser($uid)
+                )
+            );
+        });
     }
 
     /**
@@ -48,11 +50,10 @@ class PostController extends Controller
      */
     public function find(int $postId, Request $requests) : JsonResponse
     {
-        try {
-            return $this->jsonResponse($this->getItemBody($this->postService->findforUser(self::getUserID(), $postId)));
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), $e->getCode());
-        }
+        return $this->trapErrorResponse(function() use ($postId) {
+            $post = $this->postService->findforUser(self::getUserID(), $postId);
+            return $this->jsonResponse($this->getItemBody($post));
+        });
     }
 
     /**
@@ -63,13 +64,10 @@ class PostController extends Controller
     {
         $postData = $this->decodeRequestPayload($request->getContent());
 
-        try {
+        return $this->trapErrorResponse(function() use ($postData) {
             $post = $this->postService->createforUser(self::getUserID(), $postData);
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), $e->getCode());
-        }
-
-        return $this->jsonResponse($this->getItemBody($post), 201);
+            return $this->jsonResponse($this->getItemBody($post), 201);
+        });
     }
 
     /**
@@ -81,13 +79,11 @@ class PostController extends Controller
     {
         $postData = $this->decodeRequestPayload($request->getContent());
 
-        try {
-            $post = $this->postService->updateforUser(self::getUserID(), $postId, $postData);
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), $e->getCode());
-        }
+        return $this->trapErrorResponse(function() use ($postId, $postData) {
+            $this->postService->updateforUser(self::getUserID(), $postId, $postData);
+            return $this->jsonResponse([], 204);
+        });
 
-        return $this->jsonResponse([], 204);
     }
 
     /**
@@ -97,13 +93,10 @@ class PostController extends Controller
      */
     public function delete(int $postId, Request $request) : JsonResponse
     {
-        try {
-            $post = $this->postService->deleteforUser(self::getUserID(), $postId);
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), $e->getCode());
-        }
-
-        return $this->jsonResponse([], 204);
+        return $this->trapErrorResponse(function() use ($postId) {
+            $this->postService->deleteforUser(self::getUserID(), $postId);
+            return $this->jsonResponse([], 204);
+        });
     }
 
 }

@@ -24,11 +24,12 @@
 
         "oscarotero/env": "^1.0.2",
         "symfony/var-dumper": "^3.3.2",
+        "symfony/validator": "^3.3.2",
+        "symfony/console": "^3.3.2",
         "lcobucci/jwt": "^3.2.1",
         "illuminate/database": "^5.4.19",
         "monolog/monolog": "^1.22.1",
         "nesbot/carbon": "^1.22.1",
-        "symfony/console": "^3.3.2",
         "silex/silex": "^2.1.0"
     },
 

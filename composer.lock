@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "45b5ba3b8dc9c5fa59890cb249df2f8f",
+    "content-hash": "89fdeb9929d139f1beeb7fa91b79e8b4",
     "packages": [
         {
             "name": "doctrine/inflector",
@@ -75,16 +75,16 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v5.4.19",
+            "version": "v5.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
-                "reference": "50aa19491d478edd907d1f67e0928944e8b2dcb5"
+                "reference": "c5b8a02a34a52c307f16922334c355c5eef725a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/50aa19491d478edd907d1f67e0928944e8b2dcb5",
-                "reference": "50aa19491d478edd907d1f67e0928944e8b2dcb5",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/c5b8a02a34a52c307f16922334c355c5eef725a6",
+                "reference": "c5b8a02a34a52c307f16922334c355c5eef725a6",
                 "shasum": ""
             },
             "require": {
@@ -114,20 +114,20 @@
             ],
             "description": "The Illuminate Container package.",
             "homepage": "https://laravel.com",
-            "time": "2017-04-16T13:32:45+00:00"
+            "time": "2017-05-24T14:15:53+00:00"
         },
         {
             "name": "illuminate/contracts",
-            "version": "v5.4.19",
+            "version": "v5.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "ab2825726bee46a67c8cc66789852189dbef74a9"
+                "reference": "31f0193eb14aa3ee07841dc254081425616e79f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/ab2825726bee46a67c8cc66789852189dbef74a9",
-                "reference": "ab2825726bee46a67c8cc66789852189dbef74a9",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/31f0193eb14aa3ee07841dc254081425616e79f0",
+                "reference": "31f0193eb14aa3ee07841dc254081425616e79f0",
                 "shasum": ""
             },
             "require": {
@@ -156,20 +156,20 @@
             ],
             "description": "The Illuminate Contracts package.",
             "homepage": "https://laravel.com",
-            "time": "2017-03-29T13:17:47+00:00"
+            "time": "2017-04-19T20:17:43+00:00"
         },
         {
             "name": "illuminate/database",
-            "version": "v5.4.19",
+            "version": "v5.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "890564c6b84bcb2b45d41d3da072fabf422c07f5"
+                "reference": "199393c01cdb87c98aaed9be098b5699415b3bcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/890564c6b84bcb2b45d41d3da072fabf422c07f5",
-                "reference": "890564c6b84bcb2b45d41d3da072fabf422c07f5",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/199393c01cdb87c98aaed9be098b5699415b3bcf",
+                "reference": "199393c01cdb87c98aaed9be098b5699415b3bcf",
                 "shasum": ""
             },
             "require": {
@@ -216,20 +216,20 @@
                 "orm",
                 "sql"
             ],
-            "time": "2017-04-11T22:53:18+00:00"
+            "time": "2017-06-15T19:07:41+00:00"
         },
         {
             "name": "illuminate/support",
-            "version": "v5.4.19",
+            "version": "v5.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "b8cb37e15331c59da51c8ee5838038baa22d7955"
+                "reference": "a42393b56d0ec75f55e760f2a47bcf85a17a278d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/b8cb37e15331c59da51c8ee5838038baa22d7955",
-                "reference": "b8cb37e15331c59da51c8ee5838038baa22d7955",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/a42393b56d0ec75f55e760f2a47bcf85a17a278d",
+                "reference": "a42393b56d0ec75f55e760f2a47bcf85a17a278d",
                 "shasum": ""
             },
             "require": {
@@ -273,7 +273,7 @@
             ],
             "description": "The Illuminate Support package.",
             "homepage": "https://laravel.com",
-            "time": "2017-04-09T14:34:57+00:00"
+            "time": "2017-06-15T12:35:32+00:00"
         },
         {
             "name": "lcobucci/jwt",
@@ -332,70 +332,6 @@
                 "jwt"
             ],
             "time": "2016-10-31T20:09:32+00:00"
-        },
-        {
-            "name": "league/fractal",
-            "version": "0.16.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/fractal.git",
-                "reference": "d0445305e308d9207430680acfd580557b679ddc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/fractal/zipball/d0445305e308d9207430680acfd580557b679ddc",
-                "reference": "d0445305e308d9207430680acfd580557b679ddc",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4"
-            },
-            "require-dev": {
-                "doctrine/orm": "^2.5",
-                "illuminate/contracts": "~5.0",
-                "mockery/mockery": "~0.9",
-                "pagerfanta/pagerfanta": "~1.0.0",
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "~1.5",
-                "zendframework/zend-paginator": "~2.3"
-            },
-            "suggest": {
-                "illuminate/pagination": "The Illuminate Pagination component.",
-                "pagerfanta/pagerfanta": "Pagerfanta Paginator",
-                "zendframework/zend-paginator": "Zend Framework Paginator"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.13-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\Fractal\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Phil Sturgeon",
-                    "email": "me@philsturgeon.uk",
-                    "homepage": "http://philsturgeon.uk/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Handle the output of complex data structures ready for API output.",
-            "homepage": "http://fractal.thephpleague.com/",
-            "keywords": [
-                "api",
-                "json",
-                "league",
-                "rest"
-            ],
-            "time": "2017-03-12T01:28:43+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -617,56 +553,6 @@
                 "random"
             ],
             "time": "2017-03-13T16:27:32+00:00"
-        },
-        {
-            "name": "pda/pheanstalk",
-            "version": "v3.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/pda/pheanstalk.git",
-                "reference": "430e77c551479aad0c6ada0450ee844cf656a18b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/pda/pheanstalk/zipball/430e77c551479aad0c6ada0450ee844cf656a18b",
-                "reference": "430e77c551479aad0c6ada0450ee844cf656a18b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Pheanstalk\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Paul Annesley",
-                    "email": "paul@annesley.cc",
-                    "homepage": "http://paul.annesley.cc/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "PHP client for beanstalkd queue",
-            "homepage": "https://github.com/pda/pheanstalk",
-            "keywords": [
-                "beanstalkd"
-            ],
-            "time": "2015-08-07T21:42:41+00:00"
         },
         {
             "name": "pimple/pimple",
@@ -1375,6 +1261,86 @@
             "description": "Symfony Translation Component",
             "homepage": "https://symfony.com",
             "time": "2017-05-22T07:42:36+00:00"
+        },
+        {
+            "name": "symfony/validator",
+            "version": "v3.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/validator.git",
+                "reference": "07888aa5384e3a6cbdb29d158f5aaf99f67e1b88"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/validator/zipball/07888aa5384e3a6cbdb29d158f5aaf99f67e1b88",
+                "reference": "07888aa5384e3a6cbdb29d158f5aaf99f67e1b88",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9",
+                "symfony/polyfill-mbstring": "~1.0",
+                "symfony/translation": "~2.8|~3.0"
+            },
+            "conflict": {
+                "phpunit/phpunit": "<4.8.35|<5.4.3,>=5.0",
+                "symfony/dependency-injection": "<3.3",
+                "symfony/yaml": "<3.3"
+            },
+            "require-dev": {
+                "doctrine/annotations": "~1.0",
+                "doctrine/cache": "~1.0",
+                "egulias/email-validator": "^1.2.8|~2.0",
+                "symfony/cache": "~3.1",
+                "symfony/config": "~2.8|~3.0",
+                "symfony/dependency-injection": "~3.3",
+                "symfony/expression-language": "~2.8|~3.0",
+                "symfony/http-foundation": "~2.8|~3.0",
+                "symfony/intl": "^2.8.18|^3.2.5",
+                "symfony/yaml": "~3.3"
+            },
+            "suggest": {
+                "doctrine/annotations": "For using the annotation mapping. You will also need doctrine/cache.",
+                "doctrine/cache": "For using the default cached annotation reader and metadata cache.",
+                "egulias/email-validator": "Strict (RFC compliant) email validation",
+                "psr/cache-implementation": "For using the metadata cache.",
+                "symfony/config": "",
+                "symfony/expression-language": "For using the Expression validator",
+                "symfony/http-foundation": "",
+                "symfony/intl": "",
+                "symfony/property-access": "For using the Expression validator",
+                "symfony/yaml": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Validator\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Validator Component",
+            "homepage": "https://symfony.com",
+            "time": "2017-06-02T14:38:05+00:00"
         },
         {
             "name": "symfony/var-dumper",

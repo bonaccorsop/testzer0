@@ -17,7 +17,6 @@ abstract class Controller
     const DATA_KEY = 'data';
 
     const DEFAULT_PAGELEN = 10;
-    const MAX_PAGELEN = 100;
 
     protected $app;
     protected static $userId;
@@ -117,8 +116,7 @@ abstract class Controller
      */
     protected function getPageLen() : int
     {
-        $pagelen = $this->inputGet(self::PAGELEN_KEY, self::DEFAULT_PAGELEN);
-        return ($pagelen <= self::MAX_PAGELEN) ? $pagelen : self::MAX_PAGELEN;
+        return $this->inputGet(self::PAGELEN_KEY, self::DEFAULT_PAGELEN);
     }
 
     /**
@@ -146,6 +144,19 @@ abstract class Controller
         return [
             self::DATA_KEY => $data
         ];
+    }
+
+    /**
+     * @param callable $callback
+     * @return JsonResponse
+     */
+    protected function trapErrorResponse(callable $callback) : JsonResponse
+    {
+        try {
+            return $callback();
+        } catch (Exception $e) {
+            return $this->errorResponse($e->getMessage(), $e->getCode());
+        }
     }
 
     /**

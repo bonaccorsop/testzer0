@@ -3,8 +3,13 @@
 namespace Test0\Service;
 
 use stdClass;
+
+use Test0\Application\Exception\InvalidPageLengthException;
 use Test0\Application\Exception\PostNotFoundException;
 use Test0\Application\Exception\PostNotAllowedException;
+
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Test0\Repository\PostRepository;
 use Illuminate\Database\Query\Builder;
@@ -12,6 +17,8 @@ use Illuminate\Database\Query\Builder;
 class PostService extends Service
 {
     private $postRepository;
+
+    const MAX_PAGELEN = 100;
 
     /**
      * @param Logger $logger
@@ -29,9 +36,14 @@ class PostService extends Service
      * @param int $page
      * @param int $pagelen
      * @return array
+     * @throws InvalidPageLengthException
      */
     public function listForUser(int $uid, int $page, int $pagelen) : array
     {
+        if($pagelen > self::MAX_PAGELEN) {
+            throw new InvalidPageLengthException('The specified page length is too large!', 413);
+        }
+
         return $this->postRepository->getAll(function(Builder $query) use ($uid) {
             return $query->where('user_id', $uid);
         }, $page, $pagelen);
@@ -68,6 +80,7 @@ class PostService extends Service
     public function createForUser(int $uid, array $postData) : stdClass
     {
         //validation @TODO
+        //$this->validatePostData($postData);
 
         return $this->postRepository->create(array_merge($postData, ['user_id' => $uid]));
     }
@@ -84,7 +97,7 @@ class PostService extends Service
         $post = $this->pickPostForUser($uid, $postId);
 
         //validation @TODO
-
+        //$this->validatePostData($postData);
 
         $this->postRepository->update($post->id, $postData);
 
@@ -94,16 +107,31 @@ class PostService extends Service
     /**
      * @param int $uid
      * @param int $postId
-     * @param array $postData
-     * @return null
+     * @return bool
      * @throws PostNotAllowedException
      * @throws PostNotFoundException
      */
-    public function deleteForUser(int $uid, int $postId) : stdClass
+    public function deleteForUser(int $uid, int $postId) : bool
     {
         $post = $this->pickPostForUser($uid, $postId);
-        $this->postRepository->delete($post->id);
-        return null;
+        return $this->postRepository->delete($post->id);
+    }
+
+    /**
+     * @param array $data
+     * @return bool
+     * @throws InvalidPostdataException
+     */
+    private function validatePostData(array $data)
+    {
+        $constraint = new Assert\Collection([
+            'content' => new Assert\Length(['min' => 10]),
+            'content' => new Assert\Length(['min' => 10]),
+        ]);
+
+        // $errors = Validation::createValidator()->validate($data, $constraint);
+
+        // dd($errors);
     }
 
     /**

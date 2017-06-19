@@ -32,18 +32,14 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $credentials = $this->decodeRequestPayload($request->getContent());
-
-        try {
+        return $this->trapErrorResponse(function() use ($request) {
+            $credentials = $this->decodeRequestPayload($request->getContent());
             $token = $this->authService->authenticate($credentials[self::USERNAME_KEY], base64_decode($credentials[self::PASSWORD_KEY]));
-        } catch (Exception $e) {
-            return $this->errorResponse($e->getMessage(), $e->getCode());
-        }
-
-        return $this->successResponse([
-            'message' => 'You\'re logged in!',
-            'token' => $token
-        ], 201);
+            return $this->successResponse([
+                'message' => 'You\'re logged in!',
+                'token' => $token
+            ], 201);
+        });
     }
 
     /**
