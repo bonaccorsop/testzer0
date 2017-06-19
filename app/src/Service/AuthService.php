@@ -79,7 +79,7 @@ class AuthService extends Service
         }
 
         //check if password is strong enougth
-        if(strlen($password) >= 8) {
+        if(strlen($password) < 8) {
             throw new InvalidPasswordException("Password is weak. It should contains at least 8 character", 400);
         }
 
