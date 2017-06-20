@@ -7,6 +7,7 @@ use stdClass;
 use Test0\Application\Exception\InvalidPageLengthException;
 use Test0\Application\Exception\PostNotFoundException;
 use Test0\Application\Exception\PostNotAllowedException;
+use Test0\Application\Exception\InvalidPostRateException;
 
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -115,6 +116,23 @@ class PostService extends Service
     {
         $post = $this->pickPostForUser($uid, $postId);
         return $this->postRepository->delete($post->id);
+    }
+
+    /**
+     * @param int $uid
+     * @param int $postId
+     * @return bool
+     * @throws InvalidPostRateException
+     */
+    public function rateForUser(int $uid, int $postId, int $rate) : bool
+    {
+        if($rate < 1 && $rate > 5) {
+            throw new InvalidPostRateException("Rate should be between 1 and 5", 400);
+        }
+
+        $post = $this->pickPostForUser($uid, $postId);
+        $this->postRepository->update($post->id, ['rate' => $rate]);
+        return true;
     }
 
     /**

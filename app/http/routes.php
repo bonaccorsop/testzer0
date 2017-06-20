@@ -29,7 +29,8 @@ $app->get('/me',               'auth:userInfo')->before('auth:middleware');
 $app->get('me/posts',             'posts:index')->before('auth:middleware');
 $app->get('me/posts/{postId}',    'posts:find')->before('auth:middleware');
 
-$app->post('me/posts',            'posts:create')->before('auth:middleware');
-$app->put('me/posts/{postId}',    'posts:update')->before('auth:middleware');
-$app->delete('me/posts/{postId}', 'posts:delete')->before('auth:middleware');
+$app->post('me/posts',                   'posts:create')->before('auth:middleware');
+$app->put('me/posts/{postId}',           'posts:update')->before('auth:middleware');
+$app->patch('me/posts/{postId}/rate',    'posts:rate')->before('auth:middleware');
+$app->delete('me/posts/{postId}',        'posts:delete')->before('auth:middleware');
 

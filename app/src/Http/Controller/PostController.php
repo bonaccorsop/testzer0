@@ -83,7 +83,21 @@ class PostController extends Controller
             $this->postService->updateforUser(self::getUserID(), $postId, $postData);
             return $this->jsonResponse([], 204);
         });
+    }
 
+    /**
+     * @param int $postId
+     * @param Request $requests
+     * @return JsonResponse
+     */
+    public function rate(int $postId, Request $request) : JsonResponse
+    {
+        $postData = $this->decodeRequestPayload($request->getContent());
+
+        return $this->trapErrorResponse(function() use ($postId, $postData) {
+            $this->postService->rateForUser(self::getUserID(), $postId, (int) $postData['rate']);
+            return $this->jsonResponse([], 204);
+        });
     }
 
     /**
