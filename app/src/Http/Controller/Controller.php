@@ -168,6 +168,14 @@ abstract class Controller
         return ($statusCode > 200 && $statusCode < 600) ? $statusCode : 500;
     }
 
+    /**
+     * @return array
+     */
+    protected function getExcludedIds() : array
+    {
+        return array_filter(explode(',', $this->inputGet('exclude')), function($v){return ! empty($v);});
+    }
+
 
 
 }

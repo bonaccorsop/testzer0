@@ -32,12 +32,13 @@ class PostController extends Controller
     public function index(Request $request) : JsonResponse
     {
         $uid = self::getUserID();
+        $excludeIds = $this->getExcludedIds();
 
-        return $this->trapErrorResponse(function() use ($uid) {
+        return $this->trapErrorResponse(function() use ($uid, $excludeIds) {
             return $this->jsonResponse(
                 $this->getCollectionBody(
-                    $this->postService->listForUser($uid, $this->getPage(), $this->getPageLen()),
-                    $this->postService->countForUser($uid)
+                    $this->postService->listForUser($uid, $this->getPage(), $this->getPageLen(), $excludeIds),
+                    $this->postService->countForUser($uid, $excludeIds)
                 )
             );
         });

@@ -36,17 +36,18 @@ class PostService extends Service
      * @param int $uid
      * @param int $page
      * @param int $pagelen
+     * @param array $excludeIds (optional)
      * @return array
      * @throws InvalidPageLengthException
      */
-    public function listForUser(int $uid, int $page, int $pagelen) : array
+    public function listForUser(int $uid, int $page, int $pagelen, array $excludeIds = null) : array
     {
         if($pagelen > self::MAX_PAGELEN) {
             throw new InvalidPageLengthException('The specified page length is too large!', 413);
         }
 
-        return $this->postRepository->getAll(function(Builder $query) use ($uid) {
-            return $query->where('user_id', $uid)->orderBy('id', 'desc');
+        return $this->postRepository->getAll(function(Builder $query) use ($uid, $excludeIds) {
+            return $this->getListQuery($query, $uid, $excludeIds);
         }, $page, $pagelen);
     }
 
@@ -54,10 +55,10 @@ class PostService extends Service
      * @param int $uid
      * @return int
      */
-    public function countForUser(int $uid) : int
+    public function countForUser(int $uid, array $excludeIds = null) : int
     {
-        return $this->postRepository->getCount(function(Builder $query) use ($uid) {
-            return $query->where('user_id', $uid);
+        return $this->postRepository->getCount(function(Builder $query) use ($uid, $excludeIds) {
+            return $this->getListQuery($query, $uid, $excludeIds);
         });
     }
 
@@ -172,6 +173,19 @@ class PostService extends Service
         }
 
         return $post;
+    }
+
+    /**
+     * @param int $uid
+     * @param array $excludeIds
+     * @return Builder
+     */
+    private function getListQuery(Builder $query, int $uid, array $excludeIds = null) : Builder
+    {
+        if(! empty($excludeIds)) {
+            $query->whereNotIn('id', $excludeIds);
+        }
+        return $query->where('user_id', $uid)->orderBy('created_at', 'desc');
     }
 
 }
